@@ -1,0 +1,118 @@
+ Copyright (c) 1988,1990,1992,1993,1995,1998,2003,2009,2016,
+            Gaussian, Inc.  All Rights Reserved.
+  
+ This is part of the Gaussian(R) 16 program.  It is based on
+ the Gaussian(R) 09 system (copyright 2009, Gaussian, Inc.),
+ the Gaussian(R) 03 system (copyright 2003, Gaussian, Inc.),
+ the Gaussian(R) 98 system (copyright 1998, Gaussian, Inc.),
+ the Gaussian(R) 94 system (copyright 1995, Gaussian, Inc.),
+ the Gaussian 92(TM) system (copyright 1992, Gaussian, Inc.),
+ the Gaussian 90(TM) system (copyright 1990, Gaussian, Inc.),
+ the Gaussian 88(TM) system (copyright 1988, Gaussian, Inc.),
+ the Gaussian 86(TM) system (copyright 1986, Carnegie Mellon
+ University), and the Gaussian 82(TM) system (copyright 1983,
+ Carnegie Mellon University). Gaussian is a federally registered
+ trademark of Gaussian, Inc.
+  
+ This software contains proprietary and confidential information,
+ including trade secrets, belonging to Gaussian, Inc.
+  
+ This software is provided under written license and may be
+ used, copied, transmitted, or stored only in accord with that
+ written license.
+  
+ The following legend is applicable only to US Government
+ contracts under FAR:
+  
+                    RESTRICTED RIGHTS LEGEND
+  
+ Use, reproduction and disclosure by the US Government is
+ subject to restrictions as set forth in subparagraphs (a)
+ and (c) of the Commercial Computer Software - Restricted
+ Rights clause in FAR 52.227-19.
+  
+ Gaussian, Inc.
+ 340 Quinnipiac St., Bldg. 40, Wallingford CT 06492
+  
+  
+ ---------------------------------------------------------------
+ Warning -- This program may not be used in any manner that
+ competes with the business of Gaussian, Inc. or will provide
+ assistance to any competitor of Gaussian, Inc.  The licensee
+ of this program is prohibited from giving any competitor of
+ Gaussian, Inc. access to this program.  By using this program,
+ the user acknowledges that Gaussian, Inc. is engaged in the
+ business of creating and licensing software in the field of
+ computational chemistry and represents and warrants to the
+ licensee that it is not a competitor of Gaussian, Inc. and that
+ it will not use this program in any manner prohibited above.
+ ---------------------------------------------------------------
+  
+
+ Cite this work as:
+ Gaussian 16, Revision A.03,
+ M. J. Frisch, G. W. Trucks, H. B. Schlegel, G. E. Scuseria, 
+ M. A. Robb, J. R. Cheeseman, G. Scalmani, V. Barone, 
+ G. A. Petersson, H. Nakatsuji, X. Li, M. Caricato, A. V. Marenich, 
+ J. Bloino, B. G. Janesko, R. Gomperts, B. Mennucci, H. P. Hratchian, 
+ J. V. Ortiz, A. F. Izmaylov, J. L. Sonnenberg, D. Williams-Young, 
+ F. Ding, F. Lipparini, F. Egidi, J. Goings, B. Peng, A. Petrone, 
+ T. Henderson, D. Ranasinghe, V. G. Zakrzewski, J. Gao, N. Rega, 
+ G. Zheng, W. Liang, M. Hada, M. Ehara, K. Toyota, R. Fukuda, 
+ J. Hasegawa, M. Ishida, T. Nakajima, Y. Honda, O. Kitao, H. Nakai, 
+ T. Vreven, K. Throssell, J. A. Montgomery, Jr., J. E. Peralta, 
+ F. Ogliaro, M. J. Bearpark, J. J. Heyd, E. N. Brothers, K. N. Kudin, 
+ V. N. Staroverov, T. A. Keith, R. Kobayashi, J. Normand, 
+ K. Raghavachari, A. P. Rendell, J. C. Burant, S. S. Iyengar, 
+ J. Tomasi, M. Cossi, J. M. Millam, M. Klene, C. Adamo, R. Cammi, 
+ J. W. Ochterski, R. L. Martin, K. Morokuma, O. Farkas, 
+ J. B. Foresman, and D. J. Fox, Gaussian, Inc., Wallingford CT, 2016.
+ 
+ Excitation energies and oscillator strengths:
+ 
+ Excited State   1:      Singlet-A1     6.6590 eV  186.19 nm  f=0.0636  <S**2>=0.000
+       5 ->  6         0.65720
+       5 -> 12        -0.24214
+ This state for optimization and/or second-order correction.
+ Total Energy, E(TD-HF/TD-DFT) =  -55.9273726942    
+ Copying the excited state density for this state as the 1-particle RhoCI density.
+ 
+ Excited State   2:      Singlet-E      8.0991 eV  153.08 nm  f=0.0007  <S**2>=0.000
+       5 ->  7         0.65679
+       5 -> 10        -0.16727
+       5 -> 13         0.19764
+ 
+ Excited State   3:      Singlet-E      8.0991 eV  153.08 nm  f=0.0007  <S**2>=0.000
+       5 ->  8         0.65679
+       5 -> 11        -0.16727
+       5 -> 14         0.19764
+ 
+ Excited State   4:      Singlet-A1    10.2755 eV  120.66 nm  f=0.0002  <S**2>=0.000
+       5 ->  9         0.68919
+ 
+ Excited State   5:      Singlet-A1    11.3459 eV  109.28 nm  f=0.0187  <S**2>=0.000
+       5 ->  6         0.25925
+       5 -> 12         0.62557
+       5 -> 15        -0.19522
+ 
+ Excited State   6:      Singlet-E     11.4852 eV  107.95 nm  f=0.0152  <S**2>=0.000
+       5 -> 10         0.65304
+       5 -> 13         0.25004
+ 
+ Excited State   7:      Singlet-E     11.4852 eV  107.95 nm  f=0.0152  <S**2>=0.000
+       5 -> 11         0.65304
+       5 -> 14         0.25004
+ 
+ Excited State   8:      Singlet-E     12.2376 eV  101.31 nm  f=0.0065  <S**2>=0.000
+       5 ->  7        -0.24532
+       5 -> 10        -0.20433
+       5 -> 13         0.62352
+ 
+ Excited State   9:      Singlet-E     12.2376 eV  101.31 nm  f=0.0065  <S**2>=0.000
+       5 ->  8        -0.24532
+       5 -> 11        -0.20433
+       5 -> 14         0.62352
+ 
+ Excited State  10:      Singlet-E     13.4592 eV   92.12 nm  f=0.1864  <S**2>=0.000
+       4 ->  6         0.64179
+       4 -> 12        -0.22937
