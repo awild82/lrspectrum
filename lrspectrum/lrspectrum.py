@@ -137,7 +137,7 @@ class LRSpectrum(object):
             rts = [float(k) for k in self.roots.keys()]
             mn = min(rts)
             mx = max(rts)
-            extra = (mx-mn)*0.3
+            extra = (mx-mn)*0.5
             wlim = (mn-extra, mx+extra)
         self.wlim = wlim
         self.res = int(res)
@@ -191,8 +191,9 @@ class LRSpectrum(object):
         if doSpect:
             ax.plot(self.freq, self.spect, **kwargs)
         if sticks:
-            for root, oscStr in self.roots.items():
-                ax.plot((root, root), (0, oscStr), 'k-', **kwargs)
+            for root, osc_str in self.roots.items():
+                r = float(root)
+                ax.plot((r, r), (0, osc_str), 'k-', **kwargs)
         if show:
             plt.show()
 
