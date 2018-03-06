@@ -36,6 +36,7 @@ except ImportError:
 
 # TODO: Docstrings for class methods
 # TODO: Defensive checking for all methods
+# TODO: Python3 compatibility
 class LRSpectrum(object):
     """
     LRSpectrum generates a linear response spectrum from a Gaussian log file
@@ -146,10 +147,12 @@ class LRSpectrum(object):
         ones = np.ones(nPts)
         twos = 2*ones
 
-        for root, oscStr in self.roots.iteritems():
+        # Calling .items() is memory inefficent in python2, but this is good
+        # for python3
+        for root, oscStr in self.roots.items():
             if oscStr != 0:
                 root = float(root)
-                # Consider creating distribution functions. The only reason
+                # TODO: Creating distribution functions. The only reason
                 # these span lines is to increase readability
                 if meth.lower() == 'lorentz':
                     # 1/(pi*broad*(1+((w-root)/broad)^2))
@@ -188,7 +191,7 @@ class LRSpectrum(object):
         if doSpect:
             ax.plot(self.freq, self.spect, **kwargs)
         if sticks:
-            for root, oscStr in self.roots.iteritems():
+            for root, oscStr in self.roots.items():
                 ax.plot((root, root), (0, oscStr), 'k-', **kwargs)
         if show:
             plt.show()
