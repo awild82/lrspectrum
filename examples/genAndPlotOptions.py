@@ -12,7 +12,7 @@ import numpy as np
 from lrspectrum import LRSpectrum
 
 
-lr = LRSpectrum('Ammonia', 'example_ammonia.log')
+lr = LRSpectrum('example_ammonia.log', name='Ammonia')
 
 """
 The default options for gen_spect choose a fairly standard broadening level,

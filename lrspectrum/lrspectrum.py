@@ -36,7 +36,6 @@ except ImportError:
 
 # TODO: Docstrings for class methods
 # TODO: Defensive checking for all methods
-# TODO: Python3 compatibility
 class LRSpectrum(object):
     """
     LRSpectrum generates a linear response spectrum from a Gaussian log file
@@ -101,7 +100,7 @@ class LRSpectrum(object):
 
     """
 
-    def __init__(self, name, *multLogNames):
+    def __init__(self, *multLogNames, name=None):
         self.name = name
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
@@ -197,11 +196,11 @@ class LRSpectrum(object):
         if show:
             plt.show()
 
-    def _check_log(self, name):
-        if name.split('.')[-1].lower() != 'log':
-            raise ValueError('Non-logfile %s given' % (name))
+    def _check_log(self, logname):
+        if logname.split('.')[-1].lower() != 'log':
+            raise ValueError('Non-logfile %s given' % (logname))
         else:
-            return name
+            return logname
 
 
 # Default script for quick plotting

@@ -15,12 +15,12 @@ from lrspectrum import LRSpectrum
 
 
 # LRSpectrum supports logfiles listed as multiple params
-lr0 = LRSpectrum('LogParams', 'example_1.log', 'example_2.log',
-                 'example_3.log')
+lr0 = LRSpectrum('example_1.log', 'example_2.log',
+                 'example_3.log', name='LogParams')
 
 # Or as a list of logfiles.
 logs = ['example_1.log', 'example_2.log', 'example_3.log']
-lr1 = LRSpectrum('LogList', logs)
+lr1 = LRSpectrum(logs, name='LogList')
 
 # The second is particularly convenient when your log files are systematically
 # named. One option to take advantage of this is as follows.
@@ -31,7 +31,7 @@ for fil in os.listdir('.'):
     if rexp.match(fil) is not None:
         lglst.append(fil)
 
-lr2 = LRSpectrum('RELogs', lglst)
+lr2 = LRSpectrum(lglst, name='RELogs')
 
 # All methods provide the same spectrum
 lr0.gen_spect()

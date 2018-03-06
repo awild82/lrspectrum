@@ -10,9 +10,9 @@ import re
 from lrspectrum import LRSpectrum
 
 # Multiple instances of LRSpectrum can be created with different logfiles
-lr0 = LRSpectrum('ammonia', 'example_ammonia.log')
-lr1 = LRSpectrum('formaldehyde', 'example_formaldehyde.log')
-lr2 = LRSpectrum('methane', 'example_methane.log')
+lr0 = LRSpectrum('example_ammonia.log', name='ammonia')
+lr1 = LRSpectrum('example_formaldehyde.log', name='formaldehyde')
+lr2 = LRSpectrum('example_methane.log', name='methane')
 
 # Generating the spectra is the same as before
 lr0.gen_spect()

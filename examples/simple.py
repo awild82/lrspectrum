@@ -12,7 +12,7 @@ must be included in the calling directory)
 
 from lrspectrum import LRSpectrum
 
-lr = LRSpectrum('Ammonia spectrum', 'example_ammonia.log')
+lr = LRSpectrum('example_ammonia.log')
 
 # gen_spect must be called before plotting
 lr.gen_spect()
