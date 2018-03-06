@@ -1,5 +1,7 @@
 """
-Copyright 2018 Andrew Wildman
+The MIT License (MIT)
+
+Copyright (c) 2018 Andrew Wildman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -19,14 +21,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+import math
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    raise ImportError('Matplotlib is required to run LRSpectrum')
 
 try:
     import numpy as np
 except ImportError:
     raise ImportError('Numpy is required to run LRSpectrum')
-import math
 
 
+# TODO: Docstrings for class methods
+# TODO: Defensive checking for all methods
 class LRSpectrum(object):
     """
     LRSpectrum generates a linear response spectrum from a Gaussian log file
@@ -60,11 +69,11 @@ class LRSpectrum(object):
                        int
 
     Methods:
-        parseLog():
+        parse_log():
             Parses a gaussian linear response log file. Fills roots dict.
               Called during init, but can be used to regenerate if needed.
 
-        genSpect(broad,wlim,res,meth):
+        gen_spect(broad,wlim,res,meth):
             Generates a spectrum in the range given by wlim by convolving a
               specified distribution with each of the roots and scaling by the
               oscillator strength. Can be called multiple times to generate
@@ -95,9 +104,9 @@ class LRSpectrum(object):
         self.name = name
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
-            self.logfile = [self.checkLog(nm) for nm in multLogNames[0]]
+            self.logfile = [self._check_log(nm) for nm in multLogNames[0]]
         elif isinstance(multLogNames[0], str):
-            self.logfile = [self.checkLog(nm) for nm in multLogNames]
+            self.logfile = [self._check_log(nm) for nm in multLogNames]
         else:
             raise ValueError('Unexpected type for logfiles')
         self.roots = {}
@@ -107,9 +116,9 @@ class LRSpectrum(object):
         self.wlim = None
         self.res = None
 
-        self.parseLog()
+        self.parse_log()
 
-    def parseLog(self):
+    def parse_log(self):
         for lg in self.logfile:
             lines = [line.rstrip('\n') for line in open(lg)]
             for i, line in enumerate(lines):
@@ -120,7 +129,7 @@ class LRSpectrum(object):
                     self.roots[lsp[4]] = float(lsp[8].lstrip('f='))
                     # eV and unitless
 
-    def genSpect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
+    def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         self.broad = broad
         # If wlim isn't given, automatically generate it based on the roots
         if wlim is None:
@@ -162,12 +171,7 @@ class LRSpectrum(object):
     def plot(self, xlim=None, ylim=None, xLabel='Energy / eV',
              yLabel='Arbitrary Units', show=False, doSpect=True, sticks=True,
              ax=None, **kwargs):
-        try:
-            import matplotlib.pyplot as plt
-        except ImportError:
-            raise ImportError(
-                'Matplotlib.pyplot required for plotting LRSpectrum'
-            )
+
         if self.spect is None:
             print('Spectrum must be generated prior to plotting')
             return
@@ -189,7 +193,7 @@ class LRSpectrum(object):
         if show:
             plt.show()
 
-    def checkLog(self, name):
+    def _check_log(self, name):
         if name.split('.')[-1].lower() != 'log':
             raise ValueError('Non-logfile %s given' % (name))
         else:
@@ -200,5 +204,5 @@ class LRSpectrum(object):
 if __name__ == '__main__':
     import sys
     lr = LRSpectrum('NoName', sys.argv[1:])
-    lr.genSpect()
+    lr.gen_spect()
     lr.plot(show=True)

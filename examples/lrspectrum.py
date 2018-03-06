@@ -1,1 +1,0 @@
-../lrspectrum.py

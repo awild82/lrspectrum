@@ -1,0 +1,7 @@
+# Installation files
+build
+dist
+*egg*
+
+# Pycache
+__pycache__

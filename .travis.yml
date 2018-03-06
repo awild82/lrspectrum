@@ -1,0 +1,24 @@
+language: python
+sudo: false
+
+env:
+  global:
+    - PIP_DEPS="pytest coveralls pytest-cov flake8"
+
+python:
+  - '2.7'
+  - '3.6'
+
+install:
+- travis_retry pip install $PIP_DEPS
+- travis_retry pip install -r requirements.txt
+- travis_retry pip install -e .
+
+script:
+- flake8 `find . -name \*.py | grep -v setup.py | grep -v version.py | grep -v __init__.py | grep -v /doc/`
+- mkdir for_test
+- cd for_test
+- py.test --pyargs lrspectrum --cov-report term-missing --cov=lrspectrum
+
+after_success:
+- coveralls
