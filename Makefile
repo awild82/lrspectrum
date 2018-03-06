@@ -9,4 +9,4 @@ flake8:
 	@echo "flake8 passed"
 
 test:
-	py.test --pyargs shablona --cov-report term-missing --cov=shablona
+	python -m pytest --pyargs lrspectrum --cov-report term-missing --cov=lrspectrum 

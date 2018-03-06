@@ -5,3 +5,6 @@ dist
 
 # Pycache
 __pycache__
+
+# Testing files
+.coverage

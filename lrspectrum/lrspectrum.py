@@ -177,6 +177,7 @@ class LRSpectrum(object):
         if self.spect is None:
             print('Spectrum must be generated prior to plotting')
             return
+
         if ax is None:
             ax = plt.gca()
         if xLabel:
