@@ -102,8 +102,10 @@ class LRSpectrum(object):
 
     """
 
-    def __init__(self, *multLogNames, name=None, program=None):
-        self.name = name
+    def __init__(self, *multLogNames, **kwargs):
+        # Keyword arguments. Has to be this way for 2.7 compatibility
+        self.name = kwargs.pop('name', None)
+        program = kwargs.pop('program', None)
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
             self.logfile = [self._check_log(nm) for nm in multLogNames[0]]
