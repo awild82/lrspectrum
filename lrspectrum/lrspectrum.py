@@ -210,11 +210,3 @@ class LRSpectrum(object):
             raise ValueError('Non-logfile %s given' % (logname))
         else:
             return logname
-
-
-# Default script for quick plotting
-if __name__ == '__main__':
-    import sys
-    lr = LRSpectrum('NoName', sys.argv[1:])
-    lr.gen_spect()
-    lr.plot(show=True)
