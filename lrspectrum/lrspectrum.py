@@ -33,6 +33,8 @@ try:
 except ImportError:
     raise ImportError('Numpy is required to run LRSpectrum')
 
+from . import parsers
+
 
 # TODO: Docstrings for class methods
 # TODO: Defensive checking for all methods
@@ -100,7 +102,7 @@ class LRSpectrum(object):
 
     """
 
-    def __init__(self, *multLogNames, name=None):
+    def __init__(self, *multLogNames, name=None, program=None):
         self.name = name
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
@@ -116,18 +118,24 @@ class LRSpectrum(object):
         self.wlim = None
         self.res = None
 
-        self.parse_log()
+        self.parse_log(program=program)
 
-    def parse_log(self):
+    def parse_log(self, program=None):
         for lg in self.logfile:
-            lines = [line.rstrip('\n') for line in open(lg)]
-            for i, line in enumerate(lines):
-                # Note that the following is specific to gaussian output. If
-                # the logfile output changes, this needs to as well
-                if line[1:14] == 'Excited State':
-                    lsp = line.split()
-                    self.roots[lsp[4]] = float(lsp[8].lstrip('f='))
-                    # eV and unitless
+            if program is not None:
+                if not isinstance(program, str):
+                    raise TypeError(
+                        'Expected string for input "program". ' +
+                        'Recieved {0}'.format(type(program))
+                    )
+                program = program.lower()
+                if program not in parsers.progs.keys():
+                    raise ValueError(
+                        'Specified program {0} not parsable'.format(program)
+                    )
+            else:
+                program = parsers.detect(lg)
+            self.roots.update(parsers.progs[program](lg))
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         self.broad = broad

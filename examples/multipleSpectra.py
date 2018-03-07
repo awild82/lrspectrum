@@ -35,7 +35,7 @@ rexp = re.compile('example_[^\W\d_]+.log')
 for fil in os.listdir('.'):
     if rexp.match(fil) is not None:
         name = fil.split('.')[0].split('_')[1]
-        lrlst.append(LRSpectrum(name, fil))
+        lrlst.append(LRSpectrum(fil, name=name))
 
 # Here we will determine a satisfactory option for wlim (limits on frequency
 # range) in gen_spect
