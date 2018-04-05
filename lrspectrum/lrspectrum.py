@@ -99,6 +99,7 @@ class LRSpectrum(object):
     """
 
     def __init__(self, *multLogNames, **kwargs):
+
         # Keyword arguments. Has to be this way for 2.7 compatibility
         name = kwargs.pop('name', None)
         program = kwargs.pop('program', None)
@@ -150,17 +151,27 @@ class LRSpectrum(object):
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         """ Generates the broadened spectrum and stores it """
+        self.broad = broad
 
         # If wlim isn't given, automatically generate it based on the roots
-        # TODO: Base this on broad, not the gap between roots
         if wlim is None:
-            rts = [float(k) for k in self.roots.keys()]
-            mn = min(rts)
-            mx = max(rts)
-            extra = (mx-mn)*0.5
-            wlim = (mn-extra, mx+extra)
+            print("Spectral range not specified... " +
+                  "Automatically generating spectral range")
+            percent = 0.930
+            mn = None
+            mx = None
+            for k in self.roots.keys():
+                if self.roots[k] != 0:
+                    if mn is None or float(k) < mn:
+                        mn = float(k)
+                    if mx is None or float(k) > mx:
+                        mx = float(k)
+            # We are going to use the quantile function of the lorentz
+            # distribution here, even if the actual distribution is gaussian
+            lb = broad*np.tan(((1-percent)-0.5)*np.pi)+mn
+            mb = broad*np.tan((percent-0.5)*np.pi)+mx
+            wlim = (lb, mb)
 
-        self.broad = broad
         self.wlim = wlim
         self.res = int(res)
         nPts = int((wlim[1]-wlim[0])*res)
