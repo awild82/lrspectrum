@@ -12,6 +12,9 @@ def detect(logfile):
         if 'This is part of the Gaussian' in line:
             program = 'gaussian'
             break
+        elif 'Gaussian' in line:
+            program = 'gaussian'
+            break
     if program is None:
         raise RuntimeError(
             'Could not determine program for logfile {0}'.format(logfile)
