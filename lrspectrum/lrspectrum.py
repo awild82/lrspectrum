@@ -21,8 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import math
-
 try:
     import matplotlib.pyplot as plt
 except ImportError:
@@ -36,8 +34,6 @@ except ImportError:
 from . import parsers
 
 
-# TODO: Docstrings for class methods
-# TODO: Defensive checking for all methods
 class LRSpectrum(object):
     """
     LRSpectrum generates a linear response spectrum from a Gaussian log file
@@ -104,15 +100,22 @@ class LRSpectrum(object):
 
     def __init__(self, *multLogNames, **kwargs):
         # Keyword arguments. Has to be this way for 2.7 compatibility
-        self.name = kwargs.pop('name', None)
+        name = kwargs.pop('name', None)
         program = kwargs.pop('program', None)
+
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
             self.logfile = [self._check_log(nm) for nm in multLogNames[0]]
         elif isinstance(multLogNames[0], str):
             self.logfile = [self._check_log(nm) for nm in multLogNames]
         else:
-            raise ValueError('Unexpected type for logfiles')
+            raise TypeError(
+                'Unexpected type for logfiles: ' +
+                '{0}'.format(type(multLogNames[0]))
+            )
+
+        # Initialization
+        self.name = name
         self.roots = {}
         self.freq = None
         self.spect = None
@@ -120,9 +123,14 @@ class LRSpectrum(object):
         self.wlim = None
         self.res = None
 
+        # Always call parser when initializing
         self.parse_log(program=program)
 
     def parse_log(self, program=None):
+        """
+        Parses the logfiles in self.logfile according to 'program' parser
+        """
+
         for lg in self.logfile:
             if program is not None:
                 if not isinstance(program, str):
@@ -137,52 +145,47 @@ class LRSpectrum(object):
                     )
             else:
                 program = parsers.detect(lg)
+            # TODO: Break up following line for clarity
             self.roots.update(parsers.progs[program](lg))
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
-        self.broad = broad
+        """ Generates the broadened spectrum and stores it """
+
         # If wlim isn't given, automatically generate it based on the roots
+        # TODO: Base this on broad, not the gap between roots
         if wlim is None:
             rts = [float(k) for k in self.roots.keys()]
             mn = min(rts)
             mx = max(rts)
             extra = (mx-mn)*0.5
             wlim = (mn-extra, mx+extra)
+
+        self.broad = broad
         self.wlim = wlim
         self.res = int(res)
         nPts = int((wlim[1]-wlim[0])*res)
         self.freq = np.linspace(wlim[0], wlim[1], nPts)
         self.spect = np.zeros(nPts)
-        ones = np.ones(nPts)
-        twos = 2*ones
 
         # Calling .items() is memory inefficent in python2, but this is good
         # for python3
-        for root, oscStr in self.roots.items():
-            if oscStr != 0:
+        for root, osc_str in self.roots.items():
+            if osc_str != 0:
                 root = float(root)
-                # TODO: Creating distribution functions. The only reason
-                # these span lines is to increase readability
                 if meth.lower() == 'lorentz':
-                    # 1/(pi*broad*(1+((w-root)/broad)^2))
-                    l1 = np.power((self.freq-root*ones)/broad, twos)
-                    l2 = broad*np.pi*(1+l1)
-                    self.spect += oscStr*np.divide(ones, l2)
+                    self.spect += self._lorentz(broad, root, osc_str)
                 elif meth.lower() == 'gaussian':
-                    # Convert from HWHM to std dev
-                    stddev = broad/math.sqrt(2.0*math.log(2.0))
-                    # 1/((2*pi*broad^2)^(1/2))*e^(-(w-root)^2/(2*broad^2)
-                    g1 = -1*np.power(self.freq-root*ones, twos) / \
-                        (2*math.pow(stddev, 2))
-                    g2 = 1/(math.sqrt(2*np.pi)*stddev)*np.exp(g1)
-                    self.spect += oscStr*g2
+                    self.spect += self._gaussian(broad, root, osc_str)
                 else:
-                    print('Unsupported distribution "%s" specified') % meth
-                    return
+                    raise ValueError(
+                        'Unsupported distribution "{0}" specified'.format(meth)
+                    )
 
     def plot(self, xlim=None, ylim=None, xLabel='Energy / eV',
              yLabel='Arbitrary Units', show=False, doSpect=True, sticks=True,
              ax=None, **kwargs):
+        """ Plots the generated spectrum and roots """
+        # TODO: Add x/y shift & scale
 
         if self.spect is None:
             print('Spectrum must be generated prior to plotting')
@@ -208,7 +211,37 @@ class LRSpectrum(object):
             plt.show()
 
     def _check_log(self, logname):
+        """ Checks that the logfile ends with '.log' """
         if logname.split('.')[-1].lower() != 'log':
             raise ValueError('Non-logfile %s given' % (logname))
         else:
             return logname
+
+    def _lorentz(self, broad, root, osc_str):
+        """
+        Calculates and returns a lorentzian
+
+        The lorentzian is centered at root, integrates to osc_str, and has a
+        half-width at half-max of broad.
+        """
+
+        ones = np.ones(self.freq.shape)
+        # 1/(pi*broad*(1+((w-root)/broad)^2))
+        l_denom = broad*np.pi*(1+np.square((self.freq-root*ones)/broad))
+        return osc_str*np.divide(ones, l_denom)
+
+    def _gaussian(self, broad, root, osc_str):
+        """
+        Calculates and returns a gaussian
+
+        The gaussian is centered at root, integrates to osc_str, and has a
+        half-width at half-max of broad.
+        """
+
+        ones = np.ones(self.freq.shape)
+        # Convert from HWHM to std dev
+        stddev = broad/np.sqrt(2.0*np.log(2.0))
+        # 1/((2*pi*broad^2)^(1/2))*e^(-(w-root)^2/(2*broad^2)
+        g_power = -1*np.square(self.freq-root*ones) / (2*np.square(stddev))
+        gauss = 1/(np.sqrt(2*np.pi)*stddev)*np.exp(g_power)
+        return osc_str*gauss
