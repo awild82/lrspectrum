@@ -1,11 +1,12 @@
 def detect(logfile):
     """ Automatically detects program that produced the logfile """
-    if not isinstance(logfile, str):
-        raise TypeError(
-            'Expected string for input "logfile". ' +
-            'Recieved {0}'.format(type(logfile))
-        )
+
+    # Do not allow opening of files through file descriptors
+    if isinstance(logfile, int):
+        raise TypeError('Integer logfiles not allowed')
+
     fil = open(logfile)
+
     program = None
     for i in range(30):
         line = next(fil)
@@ -15,15 +16,23 @@ def detect(logfile):
         elif 'Gaussian' in line:
             program = 'gaussian'
             break
+        # Append additional programs here with elifs
+
     if program is None:
         raise RuntimeError(
             'Could not determine program for logfile {0}'.format(logfile)
         )
+
     return program
 
 
 def _parse_gaussian(logfile):
     """ Parses gaussian output """
+
+    # Do not allow opening of files through file descriptors
+    if isinstance(logfile, int):
+        raise TypeError('Integer logfiles not allowed')
+
     results = {}
     for i, line in enumerate(open(logfile)):
         if 'Excited State' in line[1:14]:
@@ -33,4 +42,15 @@ def _parse_gaussian(logfile):
     return results
 
 
-progs = {'gaussian': _parse_gaussian}
+def _parse_dummy(logfile):
+    """ Dummy parser for testing """
+    return {}
+
+
+def _parse_test(logfile):
+    """ Parser that returns the same dict for testing """
+    return {'1': 1, '2': 1, '3': 2, '4': 3, '5': 5}
+
+
+progs = {'gaussian': _parse_gaussian, 'dummy': _parse_dummy,
+         'testing': _parse_test}
