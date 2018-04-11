@@ -2,7 +2,9 @@
 
 A utility for parsing and plotting spectra from linear response calculations 
 
-<!--- TODO: insert buttons -->
+[![Build Status](https://travis-ci.org/awild82/lrspectrum.svg?branch=master)](https://travis-ci.org/awild82/lrspectrum)
+[![Coverage Status](https://coveralls.io/repos/github/awild82/lrspectrum/badge.svg?branch=master)](https://coveralls.io/github/awild82/lrspectrum?branch=master)
+
 
 ## Easy start
 
@@ -18,7 +20,7 @@ To plot, you have two options. The easier of the two uses all the default
 options, so it is not recommended for final figures. After installing, navigate
 to the directory with your log files, then
 
-`python -m lrspectrum <logfile> [<logfile> ...]`
+`$ python -m lrspectrum <logfile> [<logfile> ...]`
 
 This allows for plotting one spectrum that was generated across one or more
 logfiles.
