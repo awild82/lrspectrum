@@ -23,12 +23,12 @@ SOFTWARE.
 """
 try:
     import matplotlib.pyplot as plt
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     raise ImportError('Matplotlib is required to run LRSpectrum')
 
 try:
     import numpy as np
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     raise ImportError('Numpy is required to run LRSpectrum')
 
 from . import parsers
@@ -334,7 +334,7 @@ class LRSpectrum(object):
                 r = float(root)
                 ax.plot((r, r), (0, osc_str), 'k-', **kwargs)
 
-        if show: # pragma: no cover
+        if show:  # pragma: no cover
             plt.show()
 
         return ax
