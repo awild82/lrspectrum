@@ -1,0 +1,8 @@
+Single root for testing. Not from an electronic structure calculation
+Gaussian
+
+ Excited State   1:      Singlet-    5.182 eV  idk nm  f=0.3  <S**2>=0.000
+       3 ->  9        -0.12605
+       4 ->  6         0.62859
+       4 -> 13        -0.24169
+       5 ->  7        -0.12605

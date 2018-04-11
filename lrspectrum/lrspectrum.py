@@ -23,12 +23,12 @@ SOFTWARE.
 """
 try:
     import matplotlib.pyplot as plt
-except ImportError:
+except ImportError: # pragma: no cover
     raise ImportError('Matplotlib is required to run LRSpectrum')
 
 try:
     import numpy as np
-except ImportError:
+except ImportError: # pragma: no cover
     raise ImportError('Numpy is required to run LRSpectrum')
 
 from . import parsers
@@ -99,7 +99,6 @@ class LRSpectrum(object):
     """
 
     def __init__(self, *multLogNames, **kwargs):
-
         # Keyword arguments. Has to be this way for 2.7 compatibility
         name = kwargs.pop('name', None)
         program = kwargs.pop('program', None)
@@ -151,6 +150,33 @@ class LRSpectrum(object):
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         """ Generates the broadened spectrum and stores it """
+
+        # Input checking
+        try:
+            broad * 1.5
+        except Exception as ex:
+            print('Caught exception: {0}'.format(ex))
+            raise TypeError('Input "broad" to LRSpectrum.gen_spect: ' +
+                            '{0}'.format(type(broad)))
+        if wlim is not None:
+            try:
+                wlim[0] * 1.5
+                wlim[1] * 1.5
+            except Exception as ex:
+                print('Exception for input "wlim"')
+                raise ex
+        try:
+            res * 1.5
+        except Exception as ex:
+            print('Caught exception: {0}'.format(ex))
+            raise TypeError('Input "res" to LRSpectrum.gen_spect: ' +
+                            '{0}'.format(type(res)))
+        try:
+            meth.lower()
+        except Exception as ex:
+            raise TypeError('Input "meth" to LRSpectrum.gen_spect: ' +
+                            '{0}'.format(type(meth)))
+
         self.broad = broad
 
         # If wlim isn't given, automatically generate it based on the roots
@@ -193,33 +219,125 @@ class LRSpectrum(object):
                     )
 
     def plot(self, xlim=None, ylim=None, xLabel='Energy / eV',
-             yLabel='Arbitrary Units', show=False, doSpect=True, sticks=True,
-             ax=None, **kwargs):
+             yLabel='Arbitrary Units', show=False, do_spect=True, sticks=True,
+             ax=None, xshift=0, xscale=1, yshift=0, yscale=1, **kwargs):
         """ Plots the generated spectrum and roots """
-        # TODO: Add x/y shift & scale
 
-        if self.spect is None:
+        if self.spect is None and do_spect:
             print('Spectrum must be generated prior to plotting')
             return
 
         if ax is None:
             ax = plt.gca()
-        if xLabel:
+
+        if xLabel is not None:
             ax.set_xlabel(xLabel)
-        if yLabel:
+
+        if yLabel is not None:
             ax.set_ylabel(yLabel)
-        if xlim:
-            ax.set_xlim(xlim)
-        if ylim:
-            ax.set_ylim(ylim)
-        if doSpect:
-            ax.plot(self.freq, self.spect, **kwargs)
+
+        if xscale is not None:
+            # Type checking
+            try:
+                xscale * 1.5
+            except Exception as ex:
+                print('Caught exception: {0}'.format(ex))
+                raise TypeError('Input "xscale" to LRSpectrum.plot: ' +
+                                '{0}'.format(type(xscale)))
+
+        if xshift is not None:
+            # Type checking
+            try:
+                xshift * 1.5
+            except Exception as ex:
+                print('Caught exception: {0}'.format(ex))
+                raise TypeError('Input "xshift" to LRSpectrum.plot: ' +
+                                '{0}'.format(type(xshift)))
+
+        if xlim is not None:
+            # Type checking
+            for i in range(2):
+                try:
+                    xlim[i]
+                except TypeError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise TypeError('Input "xlim" to LRSpectrum.plot: ' +
+                                    '{0}'.format(type(xlim)))
+                except IndexError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise IndexError('Length of "xlim" to LRSpectrum.plot: ' +
+                                     '{0}'.format(len(xlim)))
+                try:
+                    xlim[i] * 1.5
+                except TypeError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise TypeError('Elements inside input "xlim" to ' +
+                                    'LRSpectrum.plot' +
+                                    '{0}'.format(type(xlim[i])))
+
+            # Setting xlim
+            xlim_mod = [x * xscale + xshift for x in xlim]
+            ax.set_xlim(xlim_mod)
+
+        if yscale is not None:
+            # Type checking
+            try:
+                yscale * 1.5
+            except Exception as ex:
+                print('Caught exception: {0}'.format(ex))
+                raise TypeError('Input "yscale" to LRSpectrum.plot: ' +
+                                '{0}'.format(type(yscale)))
+
+        if yshift is not None:
+            # Type checking
+            try:
+                yshift * 1.5
+            except Exception as ex:
+                print('Caught exception: {0}'.format(ex))
+                raise TypeError('Input "yshift" to LRSpectrum.plot: ' +
+                                '{0}'.format(type(yshift)))
+
+        if ylim is not None:
+            # Type checking
+            for i in range(2):
+                try:
+                    ylim[i]
+                except TypeError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise TypeError('Input "ylim" to LRSpectrum.plot: ' +
+                                    '{0}'.format(type(ylim)))
+                except IndexError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise IndexError('Length of "ylim" to LRSpectrum.plot: ' +
+                                     '{0}'.format(len(ylim)))
+                try:
+                    ylim[i] * 1.5
+                except TypeError as ex:
+                    print('Caught exception: {0}'.format(ex))
+                    raise TypeError('Elements inside input "ylim" to ' +
+                                    'LRSpectrum.plot' +
+                                    '{0}'.format(type(ylim[i])))
+
+            # Setting ylim
+            ylim_mod = [y * yscale + yshift for y in ylim]
+            ax.set_ylim(ylim_mod)
+
+        # Plot spectrum
+        if do_spect:
+            x = xscale*self.freq + xshift
+            y = yscale*self.spect + yshift
+            ax.plot(x, y, **kwargs)
+
+        # Plot poles
         if sticks:
             for root, osc_str in self.roots.items():
                 r = float(root)
                 ax.plot((r, r), (0, osc_str), 'k-', **kwargs)
-        if show:
+
+        if show: # pragma: no cover
             plt.show()
+
+        return ax
 
     def _check_log(self, logname):
         """ Checks that the logfile ends with '.log' """

@@ -2,3 +2,4 @@
 omit =
   *__init__.py
   lrspectrum/version.py
+  lrspectrum/__main__.py
