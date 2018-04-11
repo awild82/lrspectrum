@@ -2,16 +2,29 @@
 
 A utility for parsing and plotting spectra from linear response calculations 
 
+<!--- TODO: insert buttons -->
+
 ## Easy start
 
 First, get the repo:
+
 `$ git clone https://github.com/awild82/lrspectrum.git`
 
 Install using setuptools:
+
 `$ python setup.py install --user`
 
-To plot, all you need to do is specify the log file, generate the spectrum, and
-call the plot method:
+To plot, you have two options. The easier of the two uses all the default
+options, so it is not recommended for final figures. After installing, navigate
+to the directory with your log files, then
+
+`python -m lrspectrum <logfile> [<logfile> ...]`
+
+This allows for plotting one spectrum that was generated across one or more
+logfiles.
+
+The second options is to write a basic python script and run it. All you need to
+do is specify the log file, generate the spectrum, and call the plot method:
 ```
 import lrspectrum
 
@@ -21,6 +34,10 @@ lr = lrspectrum.LRSpectrum(logfile)
 lr.gen_spect()
 lr.plot(show=True)
 ```
+
+Run this file with
+
+`$ python <filename>`
 
 This is the bare bones configuration. For more customizability, see the sections
 below!
@@ -58,4 +75,4 @@ The third and fourth options are for python 3 or 2 specific installations.
 
 <!--- TODO: insert ## Contributing -->
 
-
+<!--- TODO: insert ## License -->
