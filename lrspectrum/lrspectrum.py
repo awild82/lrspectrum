@@ -143,7 +143,9 @@ class LRSpectrum(object):
                     raise ValueError(
                         'Specified program {0} not parsable'.format(program)
                     )
-            else:
+            else:  # pragma: no cover
+                # We dont consider coverage here; testing of this method occurs
+                # separately
                 program = parsers.detect(lg)
             # TODO: Break up following line for clarity
             self.roots.update(parsers.progs[program](lg))

@@ -9,7 +9,13 @@ def detect(logfile):
 
     program = None
     for i in range(30):
-        line = next(fil)
+        # Get new line
+        try:
+            line = next(fil)
+        except StopIteration:
+            break
+
+        # Look for Gaussian (regular and gdv)
         if 'This is part of the Gaussian' in line:
             program = 'gaussian'
             break
