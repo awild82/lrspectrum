@@ -84,13 +84,13 @@ class LRSpectrum(object):
                         uncertainty broadening (lifetime) and gaussian is for
                         vibronic broadening.
 
-        plot(xlim,ylim,xLabel,yLabel,show,lines,**kwargs):
+        plot(xlim,ylim,xlabel,ylabel,show,lines,**kwargs):
             Plots spectrum vs frequency. Built using matplotlib.pyplot, so any
               additional arguments can be passed using kwargs
             xlim:     Limits on x axis                        tuple<float>
             ylim:     Limits on y axis                        tuple<float>
-            xLabel:   Label on x axis                         string
-            yLabel:   Label on y axis                         string
+            xlabel:   Label on x axis                         string
+            ylabel:   Label on y axis                         string
             show:     Whether or not to call plt.show()       bool
             lines:    Whether or not to plot lines showing    bool
                         the roots with the respective
@@ -220,8 +220,8 @@ class LRSpectrum(object):
                         'Unsupported distribution "{0}" specified'.format(meth)
                     )
 
-    def plot(self, xlim=None, ylim=None, xLabel='Energy / eV',
-             yLabel='Arbitrary Units', show=False, do_spect=True, sticks=True,
+    def plot(self, xlim=None, ylim=None, xlabel='Energy / eV',
+             ylabel='Arbitrary Units', show=False, do_spect=True, sticks=True,
              ax=None, xshift=0, xscale=1, yshift=0, yscale=1, **kwargs):
         """ Plots the generated spectrum and roots """
 
@@ -232,11 +232,11 @@ class LRSpectrum(object):
         if ax is None:
             ax = plt.gca()
 
-        if xLabel is not None:
-            ax.set_xlabel(xLabel)
+        if xlabel is not None:
+            ax.set_xlabel(xlabel)
 
-        if yLabel is not None:
-            ax.set_ylabel(yLabel)
+        if ylabel is not None:
+            ax.set_ylabel(ylabel)
 
         if xscale is not None:
             # Type checking
@@ -278,8 +278,7 @@ class LRSpectrum(object):
                                     '{0}'.format(type(xlim[i])))
 
             # Setting xlim
-            xlim_mod = [x * xscale + xshift for x in xlim]
-            ax.set_xlim(xlim_mod)
+            ax.set_xlim(xlim)
 
         if yscale is not None:
             # Type checking
@@ -321,8 +320,7 @@ class LRSpectrum(object):
                                     '{0}'.format(type(ylim[i])))
 
             # Setting ylim
-            ylim_mod = [y * yscale + yshift for y in ylim]
-            ax.set_ylim(ylim_mod)
+            ax.set_ylim(ylim)
 
         # Plot spectrum
         if do_spect:

@@ -15,11 +15,11 @@ from lrspectrum import LRSpectrum
 
 
 # LRSpectrum supports logfiles listed as multiple params
-lr0 = LRSpectrum('example_1.log', 'example_2.log', 'example_3.log',
+lr0 = LRSpectrum('example_0.log', 'example_1.log', 'example_2.log',
                  name='LogParams')
 
 # Or as a list of logfiles.
-logs = ['example_1.log', 'example_2.log', 'example_3.log']
+logs = ['example_0.log', 'example_1.log', 'example_2.log']
 lr1 = LRSpectrum(logs, name='LogList')
 
 # The second is particularly convenient when your log files are systematically
