@@ -33,7 +33,7 @@ for fil in os.listdir('.'):
     if rexp.match(fil) is not None:
         name = fil.split('.')[0].split('_')[1]
         lrlst.append(LRSpectrum(fil, name=name))
-        
+
 # Note that the default gen_spect options aren't always good. The code attempts
 # to automatically generate a range of frequencies. It is often easier and
 # produces better results simply to give a custom, well defined wlim
