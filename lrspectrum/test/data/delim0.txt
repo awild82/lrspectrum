@@ -1,0 +1,16 @@
+This is an example of a delimited file with excitation energies
+Garbage line
+Another one for good measure
+This contains some values that should be ignored 1.25 4.2 6e-9
+
+12345 56789
+12 23
+32 21
+
+---------------------------------------------
+Excitation Energy (eV) || Oscillator Strength
+---------------------------------------------
+
+    12.568    ||  0.0213
+    1.2789e3  ||  5.6345e-5
+    9.825     ||  10064

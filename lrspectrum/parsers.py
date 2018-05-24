@@ -1,13 +1,22 @@
+import re
+
+
+def _check_nonint(logfile):
+    """Do not allow opening of files through file descriptors"""
+    if isinstance(logfile, int):
+        raise TypeError('Integer logfiles not allowed')
+
+
 def detect(logfile):
     """ Automatically detects program that produced the logfile """
 
-    # Do not allow opening of files through file descriptors
-    if isinstance(logfile, int):
-        raise TypeError('Integer logfiles not allowed')
+    # No file descriptor logfiles
+    _check_nonint(logfile)
 
     fil = open(logfile)
 
     program = None
+    # Not a super robust test, but likely sufficent
     for i in range(30):
         # Get new line
         try:
@@ -32,12 +41,37 @@ def detect(logfile):
     return program
 
 
-def _parse_gaussian(logfile):
-    """ Parses gaussian output """
+def _parse_delim(logfile):
+    """Parses a file delimited by characters outside the set [0-9e.-]"""
 
-    # Do not allow opening of files through file descriptors
-    if isinstance(logfile, int):
-        raise TypeError('Integer logfiles not allowed')
+    # No file descriptor logfiles
+    _check_nonint(logfile)
+
+    results = {}
+    fin = open(logfile)
+    for line in fin:
+        if 'excitation energy' in line.lower():
+            if 'oscillator strength' in line.lower():
+                line = line.strip()
+                # Go until the numbers
+                while len(re.split('[^0-9e.-]+', line)) != 2:
+                    line = next(fin).strip()
+                # Go until numbers stop
+                while len(re.split('[^0-9e.-]+', line)) == 2:
+                    lsp = re.split('[^0-9e.-]+', line)
+                    results[lsp[0]] = float(lsp[1])
+                    try:
+                        line = next(fin).strip()
+                    except StopIteration:
+                        break
+    return results
+
+
+def _parse_gaussian(logfile):
+    """Parses gaussian output"""
+
+    # No file descriptor logfiles
+    _check_nonint(logfile)
 
     results = {}
     for i, line in enumerate(open(logfile)):
@@ -49,14 +83,14 @@ def _parse_gaussian(logfile):
 
 
 def _parse_dummy(logfile):
-    """ Dummy parser for testing """
+    """Dummy parser for testing"""
     return {}
 
 
 def _parse_test(logfile):
-    """ Parser that returns the same dict for testing """
+    """Parser that returns the same dict for testing"""
     return {'1': 1, '2': 1, '3': 2, '4': 3, '5': 5}
 
 
-progs = {'gaussian': _parse_gaussian, 'dummy': _parse_dummy,
-         'testing': _parse_test}
+progs = {'gaussian': _parse_gaussian, 'delim': _parse_delim, 
+         'dummy': _parse_dummy, 'testing': _parse_test}

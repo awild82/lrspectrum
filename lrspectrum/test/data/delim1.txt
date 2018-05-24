@@ -1,0 +1,10 @@
+Another example of a delimited file, with other delimiters
+
+excitation energy,oscillator strength
+12.568,0.0213
+1.2789e3,5.6345e-5
+
+now some additional stuff that the program is doing
+excitation energy,oscillator strength
+9.825,10064
+and some final lines that should be ignored
