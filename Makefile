@@ -1,3 +1,6 @@
+all:
+	$(MAKE) install && $(MAKE) test
+
 flake8:
 	@if command -v flake8 > /dev/null; then \
 		echo "Running flake8"; \
@@ -10,3 +13,10 @@ flake8:
 
 test:
 	python -m pytest -v --pyargs lrspectrum --cov-report term-missing --cov=lrspectrum 
+
+install:
+	$(MAKE) reqs
+	python setup.py install --user || python setup.py install
+
+reqs:
+	pip install -r requirements.txt
