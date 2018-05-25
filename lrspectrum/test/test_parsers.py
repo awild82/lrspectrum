@@ -26,11 +26,13 @@ def test_detect():
     with pytest.raises(TypeError):
         detect(0)
 
-    with pytest.raises(RuntimeError):
-        fil = open(filname, 'w')
-        fil.write('This is not a known format')
-        fil.close()
-        detect(filname)
+    # Test default
+    fil = open(filname, 'w')
+    fil.write('Blah blah blah')
+    fil.close()
+    expected = 'delim'
+    result = detect(filname)
+    assert expected == result
 
     # Test Gaussian detection
     fil = open(filname, 'w')
