@@ -52,12 +52,20 @@ Future development aims to put it on PyPI, but is currently unavailable.
 
 ### Dependencies
 
+Core Dependencies:
  * numpy
  * matplotlib
 
+Testing Dependencies:
+ * pytest
+ * pytest-cov
+
+The easiest way to install all the dependencies is to run
+`$ pip install -r requirements.txt`
+
 ### Instructions
 
-Assuming you have all the dependencies, clone the repo:
+Once you have all the dependencies, clone the repo:
 `$ git clone https://github.com/awild82/lrspectrum.git`
 
 `setup.py` can be run the following ways:
@@ -74,8 +82,21 @@ The second option assumes you have a python interpreter installed at
 
 The third and fourth options are for python 3 or 2 specific installations.
 
-<!--- TODO: insert ## Testing -->
+## Testing
 
-<!--- TODO: insert ## Contributing -->
+Simply run
+`$ make test`
+or
+`$ python -m pytest --pyargs lrspectrum --cov-report term-missing --cov=lrspectrm`
 
-<!--- TODO: insert ## License -->
+## Contributing
+
+Found a bug? Please report it in the issues!
+
+Want to add a feature or get involved in development? Great! Please see
+[contributing.md](./doc/contributing.md).
+
+## License
+
+lrspectrum is licensed under the MIT license. See [LICENSE](./LICENSE) for more 
+details.
