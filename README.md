@@ -82,6 +82,9 @@ The second option assumes you have a python interpreter installed at
 
 The third and fourth options are for python 3 or 2 specific installations.
 
+Of course, if a system-wide installation is desired, omit the `--user` flag from
+the previous instructions. 
+
 ## Testing
 
 Simply run

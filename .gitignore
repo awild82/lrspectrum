@@ -9,3 +9,6 @@ __pycache__
 
 # Testing files
 .coverage
+
+# Notebook checkpoints
+.ipynb_checkpoints
