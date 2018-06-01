@@ -278,7 +278,8 @@ class LRSpectrum(object):
                                     '{0}'.format(type(xlim[i])))
 
             # Setting xlim
-            ax.set_xlim(xlim)
+            xlim_mod = [x * xscale + xshift for x in xlim]
+            ax.set_xlim(xlim_mod)
 
         if yscale is not None:
             # Type checking
@@ -320,7 +321,8 @@ class LRSpectrum(object):
                                     '{0}'.format(type(ylim[i])))
 
             # Setting ylim
-            ax.set_ylim(ylim)
+            ylim_mod = [y * yscale + yshift for y in ylim]
+            ax.set_ylim(ylim_mod)
 
         # Plot spectrum
         if do_spect:
