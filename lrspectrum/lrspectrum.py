@@ -105,9 +105,9 @@ class LRSpectrum(object):
 
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
-            self.logfile = [self._check_log(nm) for nm in multLogNames[0]]
+            self.logfile = multLogNames[0]
         elif isinstance(multLogNames[0], str):
-            self.logfile = [self._check_log(nm) for nm in multLogNames]
+            self.logfile = multLogNames
         else:
             raise TypeError(
                 'Unexpected type for logfiles: ' +
