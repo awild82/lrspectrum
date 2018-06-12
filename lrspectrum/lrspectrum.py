@@ -107,7 +107,7 @@ class LRSpectrum(object):
         if isinstance(multLogNames[0], list):
             self.logfile = multLogNames[0]
         elif isinstance(multLogNames[0], str):
-            self.logfile = multLogNames
+            self.logfile = list(multLogNames)
         else:
             raise TypeError(
                 'Unexpected type for logfiles: ' +

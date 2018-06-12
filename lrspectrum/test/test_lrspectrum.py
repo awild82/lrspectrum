@@ -35,8 +35,6 @@ def test___init__():
     # Error checking
     with pytest.raises(TypeError):
         LRSpectrum(0)
-    with pytest.raises(ValueError):
-        LRSpectrum('notalogfile')
 
     # Check initialized variables
     lr = LRSpectrum(good_test, program='dummy')
