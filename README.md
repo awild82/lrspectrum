@@ -5,7 +5,9 @@ A utility for parsing and plotting spectra from linear response calculations
 [![Build Status](https://travis-ci.org/awild82/lrspectrum.svg?branch=master)](https://travis-ci.org/awild82/lrspectrum)
 [![Coverage Status](https://coveralls.io/repos/github/awild82/lrspectrum/badge.svg?branch=master)](https://coveralls.io/github/awild82/lrspectrum?branch=master)
 
-[![Example Spectrum](./docs/media/aluminumKedge.png)]
+<p align="center">
+<img src="./doc/media/aluminumKedge.png" alt="Example Spectrum" width="500px"/>
+</p>
 
 ## Easy start
 
