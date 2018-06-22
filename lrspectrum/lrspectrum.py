@@ -122,9 +122,10 @@ class LRSpectrum(object):
         self.broad = None
         self.wlim = None
         self.res = None
+        self.is2c = False
 
         # Always call parser when initializing
-        self.parse_log(program=program)
+        #self.parse_log(program=program)
 
     def parse_log(self, program=None):
         """
@@ -148,7 +149,10 @@ class LRSpectrum(object):
                 # separately
                 program = parsers.detect(lg)
             # TODO: Break up following line for clarity
-            self.roots.update(parsers.progs[program](lg))
+            if program == 'gaussian':
+                self.roots.update(parsers.progs[program](lg,self.is2c))
+            else:
+                self.roots.update(parsers.progs[program](lg))
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         """ Generates the broadened spectrum and stores it """
