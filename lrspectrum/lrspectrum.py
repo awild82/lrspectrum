@@ -102,6 +102,8 @@ class LRSpectrum(object):
         # Keyword arguments. Has to be this way for 2.7 compatibility
         name = kwargs.pop('name', None)
         program = kwargs.pop('program', None)
+        is2c = kwargs.pop('is2c', False)
+
 
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
@@ -122,10 +124,10 @@ class LRSpectrum(object):
         self.broad = None
         self.wlim = None
         self.res = None
-        self.is2c = False
+        self.is2c = is2c
 
         # Always call parser when initializing
-        #self.parse_log(program=program)
+        self.parse_log(program=program)
 
     def parse_log(self, program=None):
         """
