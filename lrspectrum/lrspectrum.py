@@ -104,7 +104,6 @@ class LRSpectrum(object):
         program = kwargs.pop('program', None)
         is2c = kwargs.pop('is2c', False)
 
-
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
             self.logfile = multLogNames[0]
@@ -152,7 +151,7 @@ class LRSpectrum(object):
                 program = parsers.detect(lg)
             # TODO: Break up following line for clarity
             if program == 'gaussian':
-                self.roots.update(parsers.progs[program](lg,self.is2c))
+                self.roots.update(parsers.progs[program](lg, self.is2c))
             else:
                 self.roots.update(parsers.progs[program](lg))
 
