@@ -75,13 +75,11 @@ def _parse_gaussian(logfile, is2c=False):
     for i, line in enumerate(open(logfile)):
         if 'Excited State' in line[1:14]:
             lsp = line.split()
-            print(lsp)
             if not is2c:
                 results[lsp[4]] = float(lsp[8].lstrip('f='))
             else:
                 results[lsp[3]] = float(lsp[7])
             # eV and unitless, respectively
-    print(results)
     return results
 
 
