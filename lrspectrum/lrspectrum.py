@@ -341,13 +341,6 @@ class LRSpectrum(object):
 
         return ax
 
-    def _check_log(self, logname):
-        """ Checks that the logfile ends with '.log' """
-        if logname.split('.')[-1].lower() != 'log':
-            raise ValueError('Non-logfile %s given' % (logname))
-        else:
-            return logname
-
     def _lorentz(self, broad, root, osc_str):
         """
         Calculates and returns a lorentzian
