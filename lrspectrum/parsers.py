@@ -31,6 +31,9 @@ def detect(logfile):
         elif 'Gaussian' in line:
             program = 'gaussian'
             break
+        elif 'ChronusQ' in line:
+            program = 'chronus'
+            break
         # Append additional programs here with elifs
 
     if program is None:
@@ -80,6 +83,23 @@ def _parse_gaussian(logfile):
     return results
 
 
+def _parse_chronus(logfile):
+    """Parses ChronusQ output"""
+
+    # No file descriptors
+    _check_nonint(logfile)
+
+    results = {}
+    fin = open(logfile)
+    for i, line in enumerate(fin):
+        if 'Root' in line:
+            lsp = line.split()
+            w = lsp[-1]
+            line = next(fin)
+            results[w] = float(line.split()[-1])
+    return results
+
+
 def _parse_dummy(logfile):
     """Dummy parser for testing"""
     return {}
@@ -90,5 +110,5 @@ def _parse_test(logfile):
     return {'1': 1, '2': 1, '3': 2, '4': 3, '5': 5}
 
 
-progs = {'gaussian': _parse_gaussian, 'delim': _parse_delim,
-         'dummy': _parse_dummy, 'testing': _parse_test}
+progs = {'gaussian': _parse_gaussian, 'chronus': _parse_chronus, 
+         'delim': _parse_delim, 'dummy': _parse_dummy, 'testing': _parse_test}
