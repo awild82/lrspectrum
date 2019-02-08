@@ -5,6 +5,7 @@ import pytest
 
 from lrspectrum.parsers import detect
 from lrspectrum.parsers import _parse_gaussian
+from lrspectrum.parsers import _parse_chronus
 from lrspectrum.parsers import _parse_delim
 
 
@@ -48,6 +49,14 @@ def test_detect():
     result = detect(filname)
     assert expected == result
 
+    # Test ChronusQ detection
+    fil = open(filname, 'w')
+    fil.write('ChronusQ')
+    fil.close()
+    expected = 'chronus'
+    result = detect(filname)
+    assert expected == result
+
     os.remove(filname)
 
 
@@ -62,6 +71,21 @@ def test__parse_gaussian():
     filname = 'lrspectrum/test/data/single_root.log'
     expected = {'5.182': 0.3}
     result = _parse_gaussian(filname)
+    check_same_dicts(expected, result)
+
+
+def test__parse_chronus():
+    """ Test parsers._parse_chronus """
+
+    with pytest.raises(TypeError):
+        _parse_chronus(0)
+
+    # Test parsing
+    filname = 'lrspectrum/test/data/chronusq.out'
+    expected = {'0.92663078': 0.0001608,
+                '1.79614206': 0.00923395,
+                '1.82439203': 0.01562033}
+    result = _parse_chronus(filname)
     check_same_dicts(expected, result)
 
 
