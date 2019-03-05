@@ -176,6 +176,7 @@ class LRSpectrum(object):
         try:
             meth.lower()
         except Exception as ex:
+            print('Caught exception: {0}'.format(ex))
             raise TypeError('Input "meth" to LRSpectrum.gen_spect: ' +
                             '{0}'.format(type(meth)))
 

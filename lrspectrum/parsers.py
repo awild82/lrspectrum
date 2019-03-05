@@ -110,5 +110,5 @@ def _parse_test(logfile):
     return {'1': 1, '2': 1, '3': 2, '4': 3, '5': 5}
 
 
-progs = {'gaussian': _parse_gaussian, 'chronus': _parse_chronus, 
+progs = {'gaussian': _parse_gaussian, 'chronus': _parse_chronus,
          'delim': _parse_delim, 'dummy': _parse_dummy, 'testing': _parse_test}
