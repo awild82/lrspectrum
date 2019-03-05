@@ -3,7 +3,7 @@ sudo: false
 
 env:
   global:
-    - PIP_DEPS="pytest coveralls pytest-cov flake8"
+    - PIP_DEPS="pytest>=3.6.0 coveralls pytest-cov flake8"
 
 python:
   - '2.7'
