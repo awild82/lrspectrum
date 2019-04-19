@@ -97,6 +97,17 @@ def test_gen_spect():
     assert np.allclose(lr.freq, expected[:, 0])
     assert np.allclose(lr.spect, expected[:, 1])
 
+    # Test that a runtime error is raised when automatically generating
+    # spectral range and all oscillator strengths are zero
+    lr.roots = {}
+    try:
+        lr.gen_spect(broad=0.5)
+        raise AssertionError(
+            "Did not raise Runtime Error when determining wlim in " +
+            "gen_spect() with no roots")  # pragma: no cover
+    except RuntimeError:
+        pass
+
 
 def test__gaussian():
     """ Test generation of gaussian distribution """

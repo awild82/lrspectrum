@@ -195,6 +195,9 @@ class LRSpectrum(object):
                         mn = float(k)
                     if mx is None or float(k) > mx:
                         mx = float(k)
+            if mn is None and mx is None:
+                raise RuntimeError("Cannot automatically determine spectral " +
+                                   "range if no root has oscillator strength")
             # We are going to use the quantile function of the lorentz
             # distribution here, even if the actual distribution is gaussian
             lb = broad*np.tan(((1-percent)-0.5)*np.pi)+mn
