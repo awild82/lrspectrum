@@ -102,6 +102,7 @@ class LRSpectrum(object):
         # Keyword arguments. Has to be this way for 2.7 compatibility
         name = kwargs.pop('name', None)
         program = kwargs.pop('program', None)
+        is2c = kwargs.pop('is2c', False)
 
         # Support either one list of logfiles or many logfiles as params
         if isinstance(multLogNames[0], list):
@@ -122,6 +123,7 @@ class LRSpectrum(object):
         self.broad = None
         self.wlim = None
         self.res = None
+        self.is2c = is2c
 
         # Always call parser when initializing
         self.parse_log(program=program)
@@ -148,7 +150,10 @@ class LRSpectrum(object):
                 # separately
                 program = parsers.detect(lg)
             # TODO: Break up following line for clarity
-            self.roots.update(parsers.progs[program](lg))
+            if program == 'gaussian':
+                self.roots.update(parsers.progs[program](lg, self.is2c))
+            else:
+                self.roots.update(parsers.progs[program](lg))
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
         """ Generates the broadened spectrum and stores it """

@@ -68,7 +68,7 @@ def _parse_delim(logfile):
     return results
 
 
-def _parse_gaussian(logfile):
+def _parse_gaussian(logfile, is2c=False):
     """Parses gaussian output"""
 
     # No file descriptor logfiles
@@ -78,7 +78,10 @@ def _parse_gaussian(logfile):
     for i, line in enumerate(open(logfile)):
         if 'Excited State' in line[1:14]:
             lsp = line.split()
-            results[lsp[4]] = float(lsp[8].lstrip('f='))
+            if not is2c:
+                results[lsp[4]] = float(lsp[8].lstrip('f='))
+            else:
+                results[lsp[3]] = float(lsp[7])
             # eV and unitless, respectively
     return results
 
