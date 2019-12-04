@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from lrspectrum.parsers import detect
+from lrspectrum.parsers import _safe_add_or_extend
 from lrspectrum.parsers import _parse_gaussian
 from lrspectrum.parsers import _parse_chronus
 from lrspectrum.parsers import _parse_delim
@@ -11,11 +12,18 @@ from lrspectrum.parsers import _parse_delim
 
 def check_same_dicts(dict1, dict2):
     assert len(dict1) == len(dict2)
-    for (rk, rv), (ek, ev) in zip(dict1.items(), dict2.items()):
-        print((rk, rv))
-        print((ek, ev))
-        assert rk == ek
-        assert np.isclose(rv, ev)
+    for (key, val) in dict1.items():
+        print(key, val)
+        assert key in dict2.keys()
+        assert np.isclose(val, dict2[key])
+
+
+def test__safe_add_or_extend():
+    expect = {'a': 1.0, 'b': 12.0}
+    res = {'b': 9.5}
+    _safe_add_or_extend(res, 'a', 1.0)
+    _safe_add_or_extend(res, 'b', 2.5)
+    check_same_dicts(expect, res)
 
 
 def test_detect():
@@ -72,6 +80,11 @@ def test__parse_gaussian():
     expected = {'5.182': 0.3}
     result = _parse_gaussian(filname)
     check_same_dicts(expected, result)
+
+    # Test degenerate roots
+    filname = 'lrspectrum/test/data/degenerate_gaussian.log'
+    result = _parse_gaussian(filname)
+    assert np.allclose(result['388.9345'], 0.1663)
 
 
 def test__parse_chronus():

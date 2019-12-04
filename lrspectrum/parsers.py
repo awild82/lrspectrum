@@ -1,6 +1,17 @@
 import re
 
 
+# TODO: Rewrite parsers to have a program specific root getter and a general
+#       wrapper to ensure they each safely handle degenerate roots and do
+#       necessary setup and returns
+
+def _safe_add_or_extend(resdict, key, val):
+    if key in resdict:
+        resdict[key] += val
+    else:
+        resdict[key] = val
+
+
 def _check_nonint(logfile):
     """Do not allow opening of files through file descriptors"""
     if isinstance(logfile, int):
@@ -60,7 +71,7 @@ def _parse_delim(logfile):
                 # Go until numbers stop
                 while len(re.split('[^0-9e.-]+', line)) == 2:
                     lsp = re.split('[^0-9e.-]+', line)
-                    results[lsp[0]] = float(lsp[1])
+                    _safe_add_or_extend(results, lsp[0], float(lsp[1]))
                     try:
                         line = next(fin).strip()
                     except StopIteration:
@@ -78,8 +89,8 @@ def _parse_gaussian(logfile):
     for i, line in enumerate(open(logfile)):
         if 'Excited State' in line[1:14]:
             lsp = line.split()
-            results[lsp[4]] = float(lsp[8].lstrip('f='))
             # eV and unitless, respectively
+            _safe_add_or_extend(results, lsp[4], float(lsp[8].lstrip('f=')))
     return results
 
 
@@ -96,7 +107,7 @@ def _parse_chronus(logfile):
             lsp = line.split()
             w = lsp[-1]
             line = next(fin)
-            results[w] = float(line.split()[-1])
+            _safe_add_or_extend(results, w, float(line.split()[-1]))
     return results
 
 

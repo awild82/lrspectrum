@@ -147,7 +147,8 @@ class LRSpectrum(object):
                 # We dont consider coverage here; testing of this method occurs
                 # separately
                 program = parsers.detect(lg)
-            # TODO: Break up following line for clarity
+            # NOTE: If you have degenerate roots across the file boundaries,
+            #       this will overwrite instead of sum them
             self.roots.update(parsers.progs[program](lg))
 
     def gen_spect(self, broad=0.5, wlim=None, res=100, meth='lorentz'):
