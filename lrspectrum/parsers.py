@@ -88,9 +88,10 @@ def _parse_gaussian(logfile):
     results = {}
     for i, line in enumerate(open(logfile)):
         if 'Excited State' in line[1:14]:
-            lsp = line.split()
+            energy = line.split('eV')[0].strip().split()[-1]
+            osstr  = line.split('f')[1].strip().split('=')[1].strip().split()[0]
             # eV and unitless, respectively
-            _safe_add_or_extend(results, lsp[4], float(lsp[8].lstrip('f=')))
+            _safe_add_or_extend(results, energy, float(osstr))
     return results
 
 

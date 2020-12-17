@@ -86,6 +86,11 @@ def test__parse_gaussian():
     result = _parse_gaussian(filname)
     assert np.allclose(result['388.9345'], 0.1663)
 
+    filname = 'lrspectrum/test/data/other_gaussian.txt'
+    result = _parse_gaussian(filname)
+    assert np.allclose(result['521.10551'], 0.37)
+    assert np.allclose(result['532.10000'], 0.045)
+
 
 def test__parse_chronus():
     """ Test parsers._parse_chronus """
